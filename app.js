@@ -4,7 +4,7 @@
 // make array for the 5 community cards
 // a variable that keeps track of a poker hand's strength
 // variables that keep track of player, opponent, and betting money
-// have an ante: the minimum amount you need to put in to win
+// have an ante: the minimum amount you need to put in to play
 
 // //Constants
 // somehow make a tier list of poker hands
