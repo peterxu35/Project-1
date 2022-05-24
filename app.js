@@ -297,6 +297,8 @@ let communityCards = []
 let opponentCards = []
 
 let deckSize = 53
+
+let handStrength = 0
 function dealCards(){
     let index = Math.floor(Math.random() * deckSize)
     playerHoleCards.push(deck.splice(index - 1, 1))
@@ -331,22 +333,21 @@ function dealFlop(){
 
 // make an object and log all 7 values
 function evaluateHand() {
-    let dict = {}
-    let handStrength = 0
+    let Obj_CardsAndFreq = {}
     let isFullHouse = []
-    playerHand = communityCards.push(playerHoleCards)
+    playerHand = communityCards.concat(playerHoleCards)
     for (let i = 0; i < playerHand.length; i++){
-        if (dict.playerHand[i].value != 0 ){
-            dict.playerHand[i].value += 1
+        if (Obj_CardsAndFreq[playerHand[i].value] != 0 ){
+            Obj_CardsAndFreq[playerHand[i].value] += 1
         } else {
-            dict.playerHand[i].value = 1
+            Obj_CardsAndFreq[playerHand[i].value] = 1
         }
     }
-    let frequency = Object.values(dict)
+    let freqOfEachCard = Object.values(Obj_CardsAndFreq)
     //check for full house
-    for (let i = 0; i < frequency.length; i++){
-        if (frequency[i] === 2 || frequency[i] === 3){
-            isFullHouse.push(frequency[i])
+    for (let i = 0; i < freqOfEachCard.length; i++){
+        if (freqOfEachCard[i] === 2 || freqOfEachCard[i] === 3){
+            isFullHouse.push(freqOfEachCard[i])
         }
     }
     if (isFullHouse.length > 1){
@@ -357,21 +358,21 @@ function evaluateHand() {
     //check for pair/trip/quad
     // highscore indicates the amount of pairs and trips
     let highScore = 0
-    // freqdict for if you happen to have 3 pairs, 2pairs, or 2 trips
-    let freqDict = {}
-    frequency.forEach(item => {
+    // Obj_PairAndTrip for if you happen to have 3 pairs, 2pairs, or 2 trips
+    let Obj_PairAndTrip = {}
+    freqOfEachCard.forEach(item => {
         if (item > highScore){
             highScore = item
         }
-        if (freqDict.item != 0){
-            freqDict.item += 1
+        if (Obj_PairAndTrip.item != 0){
+            Obj_PairAndTrip.item += 1
         } else {
-            freqDict.item = 1
+            Obj_PairAndTrip.item = 1
         }
         }
     )
-    let freqOfPairsAndTrips = Object.values(freqDict)
-
+    let freqOfPairsAndTrips = Object.values(Obj_PairAndTrip)
+    //if you have 2 pairs
     if (highScore = 2 && freqOfPairsAndTrips.includes(2)){
         handStrength = 2
     } else if (highScore = 2){
