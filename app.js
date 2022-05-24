@@ -318,10 +318,15 @@ function dealFlop(){
     deckSize -= 1 
 }
 
-function evaluateHand {
+// make an object and log all 7 values
+function evaluateHand() {
     let dict = {}
     playerHand = communityCards.push(playerHoleCards)
     for (let i = 0; i < playerHand.length; i++){
-        if (playerHand[i].)
+        if (dict.playerHand[i].value != 0 ){
+            dict.playerHand[i].value += 1
+        } else {
+            dict.playerHand[i].value = 1
+        }
     }
 }
