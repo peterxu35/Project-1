@@ -354,11 +354,27 @@ function evaluateHand() {
             handStrength = 6
         }
     }
+    //check for pair/trip/quad
     let highScore = 0
+    // freqdict for if you happen to have 3 pairs, 2pairs, or 2 trips
+    let freqDict = {}
     frequency.forEach(item => {
         if (item > highScore){
             highScore = item
         }
+        if (freqDict.item != 0){
+            freqDict.item = 1
+        } else {
+            freqDict.item += 1
+        }
         }
     )
+    if (highScore = 2){
+        handStrength = 1
+    } else if (highScore = 3){
+        handStrength = 3
+    } else if (highScore = 4){
+        handStrength = 7
+    }
+    
 }
