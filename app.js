@@ -355,6 +355,7 @@ function evaluateHand() {
         }
     }
     //check for pair/trip/quad
+    // highscore indicates the amount of pairs and trips
     let highScore = 0
     // freqdict for if you happen to have 3 pairs, 2pairs, or 2 trips
     let freqDict = {}
@@ -363,13 +364,17 @@ function evaluateHand() {
             highScore = item
         }
         if (freqDict.item != 0){
-            freqDict.item = 1
-        } else {
             freqDict.item += 1
+        } else {
+            freqDict.item = 1
         }
         }
     )
-    if (highScore = 2){
+    let freqOfPairsAndTrips = Object.values(freqDict)
+
+    if (highScore = 2 && freqOfPairsAndTrips.includes(2)){
+        handStrength = 2
+    } else if (highScore = 2){
         handStrength = 1
     } else if (highScore = 3){
         handStrength = 3
