@@ -318,9 +318,22 @@ function dealFlop(){
     deckSize -= 1 
 }
 
+//handstrength list:
+//high card: 0
+//pair: 1
+//2pair: 2
+//trips: 3
+//straight: 4
+//flush: 5
+//full house: 6
+//quad: 7
+//straight flush: 8
+
 // make an object and log all 7 values
 function evaluateHand() {
     let dict = {}
+    let handStrength = 0
+    let isFullHouse = []
     playerHand = communityCards.push(playerHoleCards)
     for (let i = 0; i < playerHand.length; i++){
         if (dict.playerHand[i].value != 0 ){
@@ -329,4 +342,23 @@ function evaluateHand() {
             dict.playerHand[i].value = 1
         }
     }
+    let frequency = Object.values(dict)
+    //check for full house
+    for (let i = 0; i < frequency.length; i++){
+        if (frequency[i] === 2 || frequency[i] === 3){
+            isFullHouse.push(frequency[i])
+        }
+    }
+    if (isFullHouse.length > 1){
+        if (isFullHouse.includes(2) && isFullHouse.includes(3)){
+            handStrength = 6
+        }
+    }
+    let highScore = 0
+    frequency.forEach(item => {
+        if (item > highScore){
+            highScore = item
+        }
+        }
+    )
 }
