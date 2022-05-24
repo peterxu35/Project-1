@@ -364,23 +364,45 @@ function evaluateHand() {
         if (item > highScore){
             highScore = item
         }
-        if (Obj_PairAndTrip.item != 0){
-            Obj_PairAndTrip.item += 1
+        if (Obj_PairAndTrip[item] != 0){
+            Obj_PairAndTrip[item] += 1
         } else {
-            Obj_PairAndTrip.item = 1
+            Obj_PairAndTrip[item] = 1
         }
         }
     )
     let freqOfPairsAndTrips = Object.values(Obj_PairAndTrip)
     //if you have 2 pairs
-    if (highScore = 2 && freqOfPairsAndTrips.includes(2)){
+    if (highScore == 2 && freqOfPairsAndTrips.includes(2)){
         handStrength = 2
-    } else if (highScore = 2){
+    } else if (highScore == 2){
         handStrength = 1
-    } else if (highScore = 3){
+    } else if (highScore == 3){
         handStrength = 3
-    } else if (highScore = 4){
+    } else if (highScore == 4){
         handStrength = 7
     }
-    
+    return handStrength
+}
+//find straight function
+function isStraight(){
+    let straightArray = Object.keys(Obj_CardsAndFreq)
+    //sort the numbers in order
+    straightArray.sort(function(a, b){return a - b})
+    let current = straightArray[0]
+    //straightCounter is how many cards within 1 value of each other, 5 is a straight
+    let straightCounter = 0
+    for (let i = 1; i < straightArray.length; i++){
+        if(straightArray[i] - current === 1){
+            straightCounter += 1
+            //need a highcard to compare if 2 players have straights
+            let highCard = straightArray[i]
+        }
+        current = straightArray[i]
+    }
+    if (straightCounter = 5){
+        return true
+    } else {
+        return false
+    }
 }
