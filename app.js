@@ -406,21 +406,22 @@ function isStraight(){
         return false
     }
 }
-
-function isFlush(){
+// find flush function
+function isFlush1() {
+    let dArray = []
+    let sArray = []
+    let cArray = []
+    let hArray = []
     playerHand = communityCards.concat(playerHoleCards)
-    let flushObj = {}
-    for (let i = 0; i < playerHand.length){
-        if(flushObj[playerHand[i][suit]]){
-            flushObj[playerHand[i][suit]] += 1 
-        } else {
-            flushObj[playerHand[i][suit]] = 1
-        } 
-    }
-    let flushCounter = Object.values(flushObj)
-    if (flushCounter.includes(5)){
-        return true
-    } else {
-        return false
-    }
+    for (let i = 0; i < playerHand.length; i++){
+        if (playerHand[i][suit] === "diamond"){
+            dArray.push(playerHand[i][value])
+        } else if (playerHand[i][suit] === "spade") {
+            sArray.push(playerHand[i][value])
+        } else if (playerHand[i][suit] === "club") {
+            cArray.push(playerHand[i][value])
+        } else if (playerHand[i][suit] === "heart"){
+            hArray.push(playerHand[i][value])
+        }
+    }        
 }
