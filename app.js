@@ -372,6 +372,17 @@ function evaluateHand() {
         }
     )
     let freqOfPairsAndTrips = Object.values(Obj_PairAndTrip)
+//determine handStrength
+    //check flush
+    if (isFlush() == 1){
+        handStrength = 8
+    } else if (isFlush() = 0){
+        handStrength = 5
+    }
+    //check straight
+    if (isStraight()){
+        handStrength = 4
+    }
     //if you have 2 pairs
     if (highScore == 2 && freqOfPairsAndTrips.includes(2)){
         handStrength = 2
@@ -431,6 +442,7 @@ function isFlush() {
     if (dArray.length == 5){
         flushArray = dArray.sort(function(a, b){return a - b})
         if (checkStraightFlush()){
+            //return 1 if its a straight flush
             return 1
         } else {
             return 0
