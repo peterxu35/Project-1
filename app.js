@@ -412,6 +412,9 @@ function isFlush1() {
     let sArray = []
     let cArray = []
     let hArray = []
+    //if you have a flush, set it equal to flushArray to compare later
+    let flushArray = []
+
     playerHand = communityCards.concat(playerHoleCards)
     for (let i = 0; i < playerHand.length; i++){
         if (playerHand[i][suit] === "diamond"){
@@ -423,5 +426,19 @@ function isFlush1() {
         } else if (playerHand[i][suit] === "heart"){
             hArray.push(playerHand[i][value])
         }
-    }        
+    }
+    if (dArray.length == 5){
+        flushArray = dArray.sort(function(a, b){return a - b})
+        return true
+    } else if (sArray.length == 5){
+        flushArray = sArray.sort(function(a, b){return a - b})
+        return true
+    } else if (cArray.length == 5){
+        flushArray = cArray.sort(function(a, b){return a - b})
+        return true
+    } else if (hArray.length == 5){
+        flushArray = hArray.sort(function(a, b){return a - b})
+        return true
+    } 
+    return false    
 }
