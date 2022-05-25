@@ -390,7 +390,7 @@ function isStraight(){
     //sort the numbers in order
     straightArray.sort(function(a, b){return a - b})
     let current = straightArray[0]
-    //straightCounter is how many cards within 1 value of each other, 5 is a straight
+    //straightCounter is how many cards within 1 value of each other, 4 is a straight
     let straightCounter = 0
     for (let i = 1; i < straightArray.length; i++){
         if(straightArray[i] - current === 1){
@@ -400,18 +400,19 @@ function isStraight(){
         }
         current = straightArray[i]
     }
-    if (straightCounter = 5){
+    if (straightCounter >= 4){
         return true
     } else {
         return false
     }
 }
-// find flush function
-function isFlush1() {
+// find flush and straight function
+function isFlush() {
     let dArray = []
     let sArray = []
     let cArray = []
     let hArray = []
+    let straightFlushCounter = 0
     //if you have a flush, set it equal to flushArray to compare later
     let flushArray = []
 
@@ -429,16 +430,45 @@ function isFlush1() {
     }
     if (dArray.length == 5){
         flushArray = dArray.sort(function(a, b){return a - b})
-        return true
+        if (checkStraightFlush()){
+            return 1
+        } else {
+            return 0
+        }
     } else if (sArray.length == 5){
         flushArray = sArray.sort(function(a, b){return a - b})
-        return true
+        if (checkStraightFlush()){
+            return 1
+        } else {
+            return 0
+        }
     } else if (cArray.length == 5){
         flushArray = cArray.sort(function(a, b){return a - b})
-        return true
+        if (checkStraightFlush()){
+            return 1
+        } else {
+            return 0
+        }
     } else if (hArray.length == 5){
         flushArray = hArray.sort(function(a, b){return a - b})
-        return true
+        if (checkStraightFlush()){
+            return 1
+        } else {
+            return 0
+        }
     } 
     return false    
 }
+
+function checkStraightFlush(){
+    for (let j = 1; j < flushArray.length; j++){
+        if (flushArray[j] - flushArray[j - 1] == 1){
+            straightFlushCounter += 1
+        } 
+    }
+    if (straightFlushCounter == 4){
+        return true
+    } else {
+        return false
+    }
+} 
