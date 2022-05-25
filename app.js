@@ -337,7 +337,7 @@ function evaluateHand() {
     let isFullHouse = []
     playerHand = communityCards.concat(playerHoleCards)
     for (let i = 0; i < playerHand.length; i++){
-        if (Obj_CardsAndFreq[playerHand[i].value] != 0 ){
+        if (Obj_CardsAndFreq[playerHand[i].value]){
             Obj_CardsAndFreq[playerHand[i].value] += 1
         } else {
             Obj_CardsAndFreq[playerHand[i].value] = 1
@@ -364,7 +364,7 @@ function evaluateHand() {
         if (item > highScore){
             highScore = item
         }
-        if (Obj_PairAndTrip[item] != 0){
+        if (Obj_PairAndTrip[item]){
             Obj_PairAndTrip[item] += 1
         } else {
             Obj_PairAndTrip[item] = 1
@@ -376,7 +376,7 @@ function evaluateHand() {
     //check flush
     if (isFlush() == 1){
         handStrength = 8
-    } else if (isFlush() = 0){
+    } else if (isFlush() == 0){
         handStrength = 5
     }
     //check straight
