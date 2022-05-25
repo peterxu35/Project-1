@@ -429,14 +429,14 @@ function isFlush() {
 
     playerHand = communityCards.concat(playerHoleCards)
     for (let i = 0; i < playerHand.length; i++){
-        if (playerHand[i][suit] === "diamond"){
-            dArray.push(playerHand[i][value])
-        } else if (playerHand[i][suit] === "spade") {
-            sArray.push(playerHand[i][value])
-        } else if (playerHand[i][suit] === "club") {
-            cArray.push(playerHand[i][value])
-        } else if (playerHand[i][suit] === "heart"){
-            hArray.push(playerHand[i][value])
+        if (playerHand[i].suit === "diamond"){
+            dArray.push(playerHand[i].value)
+        } else if (playerHand[i].suit === "spade") {
+            sArray.push(playerHand[i].value)
+        } else if (playerHand[i].suit === "club") {
+            cArray.push(playerHand[i].value)
+        } else if (playerHand[i].suit === "heart"){
+            hArray.push(playerHand[i].value)
         }
     }
     if (dArray.length == 5){
