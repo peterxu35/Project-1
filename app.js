@@ -406,3 +406,16 @@ function isStraight(){
         return false
     }
 }
+
+function isFlush(){
+    playerHand = communityCards.concat(playerHoleCards)
+    let flushObj = {}
+    for (let i = 0; i < playerHand.length){
+        if(flushObj[playerHand[i][suit]]){
+            flushObj[playerHand[i][suit]] += 1 
+        } else {
+            flushObj[playerHand[i][suit]] = 1
+        } 
+    }
+    let flushCounter = Object.values(flushObj)
+}
