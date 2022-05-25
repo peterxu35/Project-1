@@ -287,7 +287,7 @@ let deck = [
         suit: "spade"
     },
 ]
-
+//card and gameplay variables
 let playerHoleCards = []
 
 let playerHand = []
@@ -299,6 +299,16 @@ let opponentCards = []
 let deckSize = 53
 
 let handStrength = 0
+//misc variabales
+let playerMoney = 100
+
+let potMoney = 0
+
+let opponentMoney = 100
+
+let betAmount = 0
+
+//deal card functions
 function dealCards(){
     let index = Math.floor(Math.random() * deckSize)
     playerHoleCards.push(deck.splice(index - 1, 1))
@@ -320,6 +330,23 @@ function dealFlop(){
     deckSize -= 1 
 }
 
+function dealTurn(){
+    let index = Math.floor(Math.random() * deckSize)
+    communityCards.push(deck.splice(index - 1, 1))
+    deckSize -= 1
+}
+
+function dealRiver() {
+    let index = Math.floor(Math.random() * deckSize)
+    communityCards.push(deck.splice(index - 1, 1))
+    deckSize -= 1
+}
+
+//button functions
+
+function betMoney(){
+
+}
 //handstrength list:
 //high card: 0
 //pair: 1
@@ -408,7 +435,7 @@ function isStraight(){
         if(straightArray[i] - current === 1){
             straightCounter += 1
             //need a highcard to compare if 2 players have straights
-            let highCard = straightArray[i]
+            let straightHighCard = straightArray[i]
         }
         current = straightArray[i]
     }
@@ -424,7 +451,6 @@ function isFlush() {
     let sArray = []
     let cArray = []
     let hArray = []
-    let straightFlushCounter = 0
     //if you have a flush, set it equal to flushArray to compare later
     let flushArray = []
 
@@ -474,12 +500,13 @@ function isFlush() {
 }
 
 function checkStraightFlush(){
+    let straightFlushCounter = 0
     for (let j = 1; j < flushArray.length; j++){
         if (flushArray[j] - flushArray[j - 1] == 1){
             straightFlushCounter += 1
         } 
     }
-    if (straightFlushCounter == 4){
+    if (straightFlushCounter >= 4){
         return true
     } else {
         return false
