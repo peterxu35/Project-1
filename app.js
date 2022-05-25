@@ -418,4 +418,9 @@ function isFlush(){
         } 
     }
     let flushCounter = Object.values(flushObj)
+    if (flushCounter.includes(5)){
+        return true
+    } else {
+        return false
+    }
 }
