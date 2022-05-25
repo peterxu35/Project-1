@@ -353,6 +353,7 @@ function evaluateHand() {
     if (isFullHouse.length > 1){
         if (isFullHouse.includes(2) && isFullHouse.includes(3)){
             handStrength = 6
+            return handStrength
         }
     }
     //check for pair/trip/quad
@@ -439,7 +440,7 @@ function isFlush() {
             hArray.push(playerHand[i].value)
         }
     }
-    if (dArray.length == 5){
+    if (dArray.length >= 5){
         flushArray = dArray.sort(function(a, b){return a - b})
         if (checkStraightFlush()){
             //return 1 if its a straight flush
@@ -447,21 +448,21 @@ function isFlush() {
         } else {
             return 0
         }
-    } else if (sArray.length == 5){
+    } else if (sArray.length >= 5){
         flushArray = sArray.sort(function(a, b){return a - b})
         if (checkStraightFlush()){
             return 1
         } else {
             return 0
         }
-    } else if (cArray.length == 5){
+    } else if (cArray.length >= 5){
         flushArray = cArray.sort(function(a, b){return a - b})
         if (checkStraightFlush()){
             return 1
         } else {
             return 0
         }
-    } else if (hArray.length == 5){
+    } else if (hArray.length >= 5){
         flushArray = hArray.sort(function(a, b){return a - b})
         if (checkStraightFlush()){
             return 1
