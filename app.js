@@ -309,7 +309,7 @@ let opponentMoney = 100
 let betAmount = 0
 
 //deal card functions
-function dealCards(){
+function dealHoleCards(){
     let index = Math.floor(Math.random() * deckSize)
     playerHoleCards.push(deck.splice(index - 1, 1))
     deckSize -= 1
@@ -404,22 +404,29 @@ function evaluateHand() {
     //check flush
     if (isFlush() == 1){
         handStrength = 8
+        return handStrength
     } else if (isFlush() == 0){
         handStrength = 5
+        return handStrength
     }
     //check straight
     if (isStraight()){
         handStrength = 4
+        return handStrength
     }
     //if you have 2 pairs
     if (highScore == 2 && freqOfPairsAndTrips.includes(2)){
         handStrength = 2
+        return handStrength
     } else if (highScore == 2){
         handStrength = 1
+        return handStrength
     } else if (highScore == 3){
         handStrength = 3
+        return handStrength
     } else if (highScore == 4){
         handStrength = 7
+        return handStrength
     }
     return handStrength
 }
@@ -468,7 +475,7 @@ function isFlush() {
     }
     if (dArray.length >= 5){
         flushArray = dArray.sort(function(a, b){return a - b})
-        if (checkStraightFlush()){
+        if (checkStraightFlush(flushArray)){
             //return 1 if its a straight flush
             return 1
         } else {
@@ -476,21 +483,21 @@ function isFlush() {
         }
     } else if (sArray.length >= 5){
         flushArray = sArray.sort(function(a, b){return a - b})
-        if (checkStraightFlush()){
+        if (checkStraightFlush(flushArray)){
             return 1
         } else {
             return 0
         }
     } else if (cArray.length >= 5){
         flushArray = cArray.sort(function(a, b){return a - b})
-        if (checkStraightFlush()){
+        if (checkStraightFlush(flushArray)){
             return 1
         } else {
             return 0
         }
     } else if (hArray.length >= 5){
         flushArray = hArray.sort(function(a, b){return a - b})
-        if (checkStraightFlush()){
+        if (checkStraightFlush(flushArray)){
             return 1
         } else {
             return 0
@@ -499,7 +506,7 @@ function isFlush() {
     return false    
 }
 
-function checkStraightFlush(){
+function checkStraightFlush(flushArray){
     let straightFlushCounter = 0
     for (let j = 1; j < flushArray.length; j++){
         if (flushArray[j] - flushArray[j - 1] == 1){
@@ -512,3 +519,13 @@ function checkStraightFlush(){
         return false
     }
 } 
+
+function compare(){
+    if (evaluateHand(player) > evaluateHand(opponent)){
+        playerMoney += potMoney
+    } else if (evaluateHand(player) < evaluateHand(opponent)){
+        opponentMoney += potMoney
+    } if (evaluateHand(player) == evaluateHand(opponent )){
+
+    }
+}
