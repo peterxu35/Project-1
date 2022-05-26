@@ -359,7 +359,7 @@ function betMoney(){
 //straight flush: 8
 
 // make an object and log all 7 values
-function evaluateHand() {
+function evaluateHand(flushArray) {
     let Obj_CardsAndFreq = {}
     let isFullHouse = []
     playerHand = communityCards.concat(playerHoleCards)
@@ -511,6 +511,8 @@ function checkStraightFlush(flushArray){
     for (let j = 1; j < flushArray.length; j++){
         if (flushArray[j] - flushArray[j - 1] == 1){
             straightFlushCounter += 1
+        } else {
+            straightFlushCounter = 0
         } 
     }
     if (straightFlushCounter >= 4){
