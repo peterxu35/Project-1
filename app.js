@@ -402,10 +402,10 @@ function evaluateHand(flushArray) {
     let freqOfPairsAndTrips = Object.values(Obj_PairAndTrip)
 //determine handStrength
     //check flush
-    if (isFlush() == 1){
+    if (isFlush() == 2){
         handStrength = 8
         return handStrength
-    } else if (isFlush() == 0){
+    } else if (isFlush() == 1){
         handStrength = 5
         return handStrength
     }
@@ -476,31 +476,31 @@ function isFlush() {
     if (dArray.length >= 5){
         flushArray = dArray.sort(function(a, b){return a - b})
         if (checkStraightFlush(flushArray)){
-            //return 1 if its a straight flush
-            return 1
+            //return 2 if its a straight flush
+            return 2
         } else {
-            return 0
+            return 1
         }
     } else if (sArray.length >= 5){
         flushArray = sArray.sort(function(a, b){return a - b})
         if (checkStraightFlush(flushArray)){
-            return 1
+            return 2
         } else {
-            return 0
+            return 1
         }
     } else if (cArray.length >= 5){
         flushArray = cArray.sort(function(a, b){return a - b})
         if (checkStraightFlush(flushArray)){
-            return 1
+            return 2
         } else {
-            return 0
+            return 1
         }
     } else if (hArray.length >= 5){
         flushArray = hArray.sort(function(a, b){return a - b})
         if (checkStraightFlush(flushArray)){
-            return 1
+            return 2
         } else {
-            return 0
+            return 1
         }
     } 
     return false    
@@ -511,7 +511,7 @@ function checkStraightFlush(flushArray){
     for (let j = 1; j < flushArray.length; j++){
         if (flushArray[j] - flushArray[j - 1] == 1){
             straightFlushCounter += 1
-            if (straightFlushCounter = 4){
+            if (straightFlushCounter == 4){
                 break
             }
         } else {
