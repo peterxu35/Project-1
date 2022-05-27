@@ -104,6 +104,7 @@ function betMoney(){
 
 // make an object and log all 7 values
 function evaluateHand(flushArray) {
+    let handStrength = 0
     playerHand = communityCards.concat(playerHoleCards)
     let Obj_CardsAndFreq = {}
     for (let i = 0; i < playerHand.length; i++){
@@ -344,6 +345,7 @@ function checkStraightFlush(flushArray){
     for (let j = 1; j < flushArray.length; j++){
         if (flushArray[j] - flushArray[j - 1] == 1){
             straightFlushCounter += 1
+            let straightFlushHighCard = flushArray[i]
             if (straightFlushCounter == 4){
                 break
             }
@@ -362,10 +364,84 @@ function compare(){
     if (evaluateHand() > evaluateBotHand()){
         playerMoney += potMoney
     } else if (evaluateHand() < evaluateBotHand()){
-        opponentMoney += potMoney
+        botMoney += potMoney
     } if (evaluateHand() == evaluateBotHand()){
-        if (evaluateHand(player) == 0 || evaluateHand(player) == 1 || evaluateHand(player) == 3){
+ //when handstrength is equal you have to compare arrays of values 
+        //for highcard, pair, trip, quads
+        if (evaluateHand() == 0 || evaluateHand() == 1 || evaluateHand() == 3 || evaluateHand() == 7){
+            if (sortedObj[0] > sortedObj1[0]){
+                playerMoney += potMoney
+            } else if (sortedObj[0] < sortedObj1[0]){
+                botMoney += potMoney
+            } else {
+                if (sortedObj[6] > sortedObj1[6]){
+                    playerMoney += potMoney
+                } else if (sortedObj[6] < sortedObj1[6]){
+                    botMoney += potMoney
+                } else {
+                    playerMoney += (potMoney / 5)
+                    botMoney += (potMoney / 5)
+                }
+            }
+        }
+        //for 2pair and full house, where you can keep iterating in the front of the array for 1 more time
+        if (evaluateHand() == 2){
+            if (sortedObj[0] > sortedObj1[0]){
+                playerMoney += potMoney
+            } else if (sortedObj[0] < sortedObj1[0]){
+                botMoney += potMoney
+            } else {
+                if (sortedObj[0] == sortedObj1[0]){
+                    if (sortedObj[1] > sortedObj1[1]){
+                        playerMoney += potMoney
+                    } else if (sortedObj[1] < sortedObj[1]){
+                        botMoney += potMoney
+                    } else {
+                        playerMoney += (potMoney / 5)
+                        botMoney += (potMoney / 5)
+                    }
+                }
+            }
             
+        }
+        //for straight, only needs to look at 1 card
+        if (evaluateHand == 4){
+            if(straightHighCard > straightHighCard1){
+                playerMoney += potMoney 
+            } else if (straightHighCard < straightHighCard1){
+                botMoney += potMoney
+            } else {
+                playerMoney += (potMoney / 5)
+                botMoney += (potMoney / 5)
+            }
+        }
+        //for flush, it is sorted in ascending order, start from back
+        if (evaluateHand == 5){
+            if (flushArray[flushArray.length - 1] > flushArray1[flushArray1 - 1]){
+                playerMoney += potMoney
+            } else if (flushArray[flushArray.length - 1] < flushArray1[flushArray1 - 1]){
+                botMoney += potMoney
+            } else {
+                if (flushArray[flushArray.length - 2] > flushArray1[flushArray1.length - 2]){
+                    playerMoney += potMoney
+                } else if (flushArray[flushArray.length - 2] < flushArray1[flushArray1.length - 2]){
+                    botMoney += potMoney
+                } else {
+                    playerMoney += (potMoney / 5)
+                    botMoney += (potMoney / 5)
+                }
+            }      
+        }
+        //for straight flush, also only need to look at 1 card
+        if (evaluateHand == 8){
+            if(straightFlushHighCard > straightFlushHighCard1){
+                playerMoney += potMoney 
+            } else if (straightFlushHighCard < straightFlushHighCard1){
+                botMoney += potMoney
+            } else {
+                playerMoney += (potMoney / 5)
+                botMoney += (potMoney / 5)
+            }
         }
     }
 }
@@ -376,3 +452,7 @@ card1.appendChild(deck.cards[0].getHTML())
 const card2 = document.querySelector('.container1')
 card1.appendChild(deck.cards[1].getHTML())
 console.log(evaluateHand())
+
+
+// const betMoney = document.querySelector('#bet')
+// betMoney.addEventListener('click',betMoney)
