@@ -86,11 +86,6 @@ function dealRiver() {
     deckSize -= 1
 }
 
-//button functions
-
-function betMoney(){
-
-}
 //handstrength list:
 //high card: 0
 //pair: 1
@@ -456,3 +451,33 @@ console.log(evaluateHand())
 
 // const betMoney = document.querySelector('#bet')
 // betMoney.addEventListener('click',betMoney)
+
+//const fold = document.querySelector('#fold)
+//fold.addEventListener('click',fold)
+
+//const call = document.querySelector('#call')
+//call.addEventListener('click', call)
+
+function betMoney(){
+    playerMoney -= 10
+    potMoney += 10
+}
+
+function fold(){
+    botMoney += potMoney
+    potMoney = 0
+    playerHand = []
+    botHand = []
+}
+
+function call(){
+    
+}
+
+const text = document.querySelector('#text')
+
+if (playerMoney == 200){
+    text.textContent = "Congrats you win!"
+} else if (botMoney == 200){
+    text.textContent = "No more money :("
+}
