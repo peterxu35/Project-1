@@ -22,6 +22,9 @@ class Card {
         cardDiv.dataset.value = `${this.value} ${this.suit}`
         return cardDiv
     } 
+    getValue(){
+        return this.value
+    }
     
 }
 

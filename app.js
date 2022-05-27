@@ -26,7 +26,8 @@
 // loop through the array to build a new array of the best 5 cards
 
 import Deck from './deck.js'
-let deck = new Deck()
+const deck = new Deck()
+
 //card and gameplay variables
 let playerHoleCards = []
 
@@ -51,12 +52,15 @@ let betAmount = 0
 //deal card functions
 function dealHoleCards(){
     let index = Math.floor(Math.random() * deckSize)
-    playerHoleCards.push(deck.splice(index - 1, 1))
+    playerHoleCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1
     index = Math.floor(Math.random() * deckSize)
-    playerHoleCards.push(deck.splice(index - 1, 1))
+    playerHoleCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1
 }
+dealHoleCards()
+console.log(playerHoleCards)
+
 
 function dealFlop(){
     let index = Math.floor(Math.random() * deckSize)
@@ -100,9 +104,8 @@ function betMoney(){
 
 // make an object and log all 7 values
 function evaluateHand(flushArray) {
-    let Obj_CardsAndFreq = {}
-    let isFullHouse = []
     playerHand = communityCards.concat(playerHoleCards)
+    let Obj_CardsAndFreq = {}
     for (let i = 0; i < playerHand.length; i++){
         if (Obj_CardsAndFreq[playerHand[i].value]){
             Obj_CardsAndFreq[playerHand[i].value] += 1
@@ -110,8 +113,89 @@ function evaluateHand(flushArray) {
             Obj_CardsAndFreq[playerHand[i].value] = 1
         }
     }
+    console.log("here342", Obj_CardsAndFreq)
+    console.log("here222", playerHand[0])
     let freqOfEachCard = Object.values(Obj_CardsAndFreq)
     //check for full house
+    let isFullHouse = []
+    for (let i = 0; i < freqOfEachCard.length; i++){
+        if (freqOfEachCard[i] === 2 || freqOfEachCard[i] === 3){
+            isFullHouse.push(freqOfEachCard[i])
+        }
+    }
+    if (isFullHouse.length > 1){
+        if (isFullHouse.includes(2) && isFullHouse.includes(3)){
+            handStrength = 6
+            return handStrength
+        }
+    }
+    //check for pair/trip/quad
+    // highscore indicates the amount of pairs and trips
+    let highScore = 0
+    // Obj_PairAndTrip for if you happen to have 3 pairs, 2pairs, or 2 trips
+    let Obj_PairAndTrip = {}
+    freqOfEachCard.forEach(item => {
+        if (item > highScore){
+            highScore = item
+            console.log("here", item)
+            console.log("here2", freqOfEachCard)
+            console.log("here3", Obj_CardsAndFreq)
+        }
+        if (Obj_PairAndTrip[item]){
+            Obj_PairAndTrip[item] += 1
+        } else {
+            Obj_PairAndTrip[item] = 1
+        }
+        }
+    )
+   
+    let freqOfPairsAndTrips = Object.values(Obj_PairAndTrip)
+//determine handStrength
+    //check flush
+    if (isFlush() == 2){
+        handStrength = 8
+        return handStrength
+    } else if (isFlush() == 1){
+        handStrength = 5
+        return handStrength
+    }
+    //check straight
+    if (isStraight()){
+        handStrength = 4
+        return handStrength
+    }
+    //if you have 2 pairs
+    if (highScore == 2 && freqOfPairsAndTrips.includes(2)){
+        handStrength = 2
+        return handStrength
+    } else if (highScore == 2){
+        handStrength = 1
+        return handStrength
+    } else if (highScore == 3){
+        handStrength = 3
+        return handStrength
+    } else if (highScore == 4){
+        handStrength = 7
+        return handStrength
+    }
+    return handStrength
+}
+
+// make the same function but for the bot
+
+function evaluateBotHand(flushArray) {
+    botHand = communityCards.concat(playerHoleCards)
+    let Obj_CardsAndFreq = {}
+    for (let i = 0; i < botHand.length; i++){
+        if (Obj_CardsAndFreq[botHand[i].value]){
+            Obj_CardsAndFreq[botHand[i].value] += 1
+        } else {
+            Obj_CardsAndFreq[botHand[i].value] = 1
+        }
+    }
+    let freqOfEachCard = Object.values(Obj_CardsAndFreq)
+    //check for full house
+    let isFullHouse = []
     for (let i = 0; i < freqOfEachCard.length; i++){
         if (freqOfEachCard[i] === 2 || freqOfEachCard[i] === 3){
             isFullHouse.push(freqOfEachCard[i])
@@ -170,9 +254,18 @@ function evaluateHand(flushArray) {
     }
     return handStrength
 }
-//find straight function
+
+// find straight function
 function isStraight(){
-    let straightArray = Object.keys(Obj_CardsAndFreq)
+    let Obj_CardsAndFreq1 = {}
+    for (let i = 0; i < playerHand.length; i++){
+        if (Obj_CardsAndFreq1[playerHand[i].value]){
+            Obj_CardsAndFreq1[playerHand[i].value] += 1
+        } else {
+            Obj_CardsAndFreq1[playerHand[i].value] = 1
+        }
+    }
+    let straightArray = Object.keys(Obj_CardsAndFreq1)
     //sort the numbers in order
     straightArray.sort(function(a, b){return a - b})
     let current = straightArray[0]
@@ -266,14 +359,20 @@ function checkStraightFlush(flushArray){
 } 
 
 function compare(){
-    if (evaluateHand(player) > evaluateHand(opponent)){
+    if (evaluateHand() > evaluateBotHand()){
         playerMoney += potMoney
-    } else if (evaluateHand(player) < evaluateHand(opponent)){
+    } else if (evaluateHand() < evaluateBotHand()){
         opponentMoney += potMoney
-    } if (evaluateHand(player) == evaluateHand(opponent )){
-
+    } if (evaluateHand() == evaluateBotHand()){
+        if (evaluateHand(player) == 0 || evaluateHand(player) == 1 || evaluateHand(player) == 3){
+            
+        }
     }
 }
 
 const card1 = document.querySelector('.container1')
 card1.appendChild(deck.cards[0].getHTML())
+
+const card2 = document.querySelector('.container1')
+card1.appendChild(deck.cards[1].getHTML())
+console.log(evaluateHand())
