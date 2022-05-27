@@ -16,6 +16,5 @@ Technologies Used
 HTML
 CSS
 JavaScript (logic and DOM manipulation)
-Canvas (Optional)
 Wireframes:
 what game will look like
