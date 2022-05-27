@@ -6,7 +6,7 @@
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 4rem);
-    grid-template-rows: 7rem 2rem 7rem;
+    grid-template-rows: 7rem;
     gap: 3rem;
     justify-content: center;
     padding-top: 1rem;
@@ -32,6 +32,15 @@
     padding-top: 2rem;
 }
 
+.container4 {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 4rem);
+    grid-template-rows: 2rem 7rem;
+    gap: 3rem;
+    justify-content: center;
+    padding-top: 1rem;
+}
 
 .computer-card {
     height: 100;
@@ -54,6 +63,7 @@
 }
 
 .card {
+    position: relative;
     height: 100%;
     width: 100%;
     border: 1px solid black;
@@ -61,4 +71,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.5rem;
+}
+
+.card::before,
+.card::after {
+    position: absolute;
+    content: attr(data-value);
+    font-size: 1rem;
+}
+
+.card::before {
+    top: .5rem;
+    left: .5rem;
+}
+
+.card::after {
+    bottom: .5rem;
+    right: .5rem;
+    transform: rotate(180deg)
+} 
+
+.card.red{
+    color: red
+}
+
+.card.black{
+    color:black
 }

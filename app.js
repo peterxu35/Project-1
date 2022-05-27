@@ -274,3 +274,6 @@ function compare(){
 
     }
 }
+
+const card1 = document.querySelector('.container1')
+card1.appendChild(deck.cards[0].getHTML())
