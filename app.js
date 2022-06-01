@@ -52,6 +52,8 @@ let betAmount = 0
 //deal card functions
 function dealHoleCards(){
     let index = Math.floor(Math.random() * deckSize)
+    //playerHoleCards should be an array of cards, not an array of array of cards
+    //to do figure out splice return
     playerHoleCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1
     index = Math.floor(Math.random() * deckSize)
@@ -59,6 +61,7 @@ function dealHoleCards(){
     deckSize -= 1
 }
 dealHoleCards()
+evaluateHand()
 console.log(playerHoleCards)
 
 
@@ -100,17 +103,24 @@ function dealRiver() {
 // make an object and log all 7 values
 function evaluateHand(flushArray) {
     let handStrength = 0
+    console.log("playerHoleCards", playerHoleCards)
+    console.log("communityCards", communityCards)
     playerHand = communityCards.concat(playerHoleCards)
+    console.log("playerhand", playerHand)
     let Obj_CardsAndFreq = {}
     for (let i = 0; i < playerHand.length; i++){
-        if (Obj_CardsAndFreq[playerHand[i].value]){
-            Obj_CardsAndFreq[playerHand[i].value] += 1
+        if (Obj_CardsAndFreq[playerHand[i][0].value]){
+            Obj_CardsAndFreq[playerHand[i][0].value] += 1
         } else {
-            Obj_CardsAndFreq[playerHand[i].value] = 1
+            Obj_CardsAndFreq[playerHand[i][0].value] = 1
         }
     }
+    console.log("playerHoleCards", playerHoleCards)
+    console.log("herexxxx", playerHand)
+    console.log("deck", deck)
     console.log("here342", Obj_CardsAndFreq)
     console.log("here222", playerHand[0])
+    // console.log("playerHand[0][0]", playerHand[0][0].value)
     let freqOfEachCard = Object.values(Obj_CardsAndFreq)
     //check for full house
     let isFullHouse = []
@@ -147,19 +157,6 @@ function evaluateHand(flushArray) {
    
     let freqOfPairsAndTrips = Object.values(Obj_PairAndTrip)
 //determine handStrength
-    //check flush
-    if (isFlush() == 2){
-        handStrength = 8
-        return handStrength
-    } else if (isFlush() == 1){
-        handStrength = 5
-        return handStrength
-    }
-    //check straight
-    if (isStraight()){
-        handStrength = 4
-        return handStrength
-    }
     //if you have 2 pairs
     if (highScore == 2 && freqOfPairsAndTrips.includes(2)){
         handStrength = 2
@@ -172,6 +169,19 @@ function evaluateHand(flushArray) {
         return handStrength
     } else if (highScore == 4){
         handStrength = 7
+        return handStrength
+    }
+    //check flush
+    if (isFlush() == 2){
+        handStrength = 8
+        return handStrength
+    } else if (isFlush() == 1){
+        handStrength = 5
+        return handStrength
+    }
+    //check straight
+    if (isStraight()){
+        handStrength = 4
         return handStrength
     }
     return handStrength
@@ -406,8 +416,8 @@ function compare(){
             } else if (straightHighCard < straightHighCard1){
                 botMoney += potMoney
             } else {
-                playerMoney += (potMoney / 5)
-                botMoney += (potMoney / 5)
+                playerMoney += (potMoney / 2)
+                botMoney += (potMoney / 2)
             }
         }
         //for flush, it is sorted in ascending order, start from back
@@ -422,8 +432,8 @@ function compare(){
                 } else if (flushArray[flushArray.length - 2] < flushArray1[flushArray1.length - 2]){
                     botMoney += potMoney
                 } else {
-                    playerMoney += (potMoney / 5)
-                    botMoney += (potMoney / 5)
+                    playerMoney += (potMoney / 2)
+                    botMoney += (potMoney / 2)
                 }
             }      
         }
@@ -434,18 +444,28 @@ function compare(){
             } else if (straightFlushHighCard < straightFlushHighCard1){
                 botMoney += potMoney
             } else {
-                playerMoney += (potMoney / 5)
-                botMoney += (potMoney / 5)
+                playerMoney += (potMoney / 2)
+                botMoney += (potMoney / 2)
             }
         }
     }
 }
 
+// function getCard() {
+//     const cardDiv = document.createElement('div')
+//     cardDiv.innerText = playerHand[0][0].suit
+// // cardDiv.classList.add("card", this.color)
+//     cardDiv.dataset.value = `${playerHand[0][0].value} ${playerHand[0][0].suit}`
+// return cardDiv
+// }
+
+
+
 const card1 = document.querySelector('.container1')
-card1.appendChild(deck.cards[0].getHTML())
+card1.appendChild(playerHand[0][0].getHTML())
 
 const card2 = document.querySelector('.container1')
-card1.appendChild(deck.cards[1].getHTML())
+card1.appendChild(playerHand[1][0].getHTML())
 console.log(evaluateHand())
 
 
@@ -458,11 +478,24 @@ console.log(evaluateHand())
 //const call = document.querySelector('#call')
 //call.addEventListener('click', call)
 
+//const flop = document.querySelector('#flop')
+//flop.addEventListener('click', dealFlop)
+
+//const turn = document.querySelector('#turn')
+//turn.addEventListener('click', dealTurn)
+
+//const river = document.querySelector('#river')
+//river.addEventListener('click', dealRiver)
+
+const text = document.querySelector('.text')
+text.textContent = "lose"
+
 function betMoney(){
+    text.innerHTML = "You put in 10 points"
     playerMoney -= 10
     potMoney += 10
 }
-
+betMoney()
 function fold(){
     botMoney += potMoney
     potMoney = 0
@@ -471,10 +504,11 @@ function fold(){
 }
 
 function call(){
-    
+    playerMoney -= 10
+    potMoney += 10
 }
 
-const text = document.querySelector('#text')
+
 
 if (playerMoney == 200){
     text.textContent = "Congrats you win!"

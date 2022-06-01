@@ -2,6 +2,11 @@
     box-sizing: border-box;
 }
 
+header {
+    margin: 0;
+    text-align: center;
+}
+
 .container1 {
     margin: 0;
     display: grid;
@@ -15,7 +20,7 @@
 .container2 {
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(3, 4rem);
+    grid-template-columns: repeat(6, 4rem);
     grid-template-rows: 2rem;
     gap: 1.5rem;
     justify-content: center;
@@ -93,7 +98,7 @@
 } 
 
 .card.red{
-    color: red
+    color:red;
 }
 
 .card.black{
