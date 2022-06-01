@@ -25,12 +25,13 @@ footer {
 .container2 {
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(7, 4rem);
+    grid-template-columns: repeat(8, 4rem);
     grid-template-rows: 2rem;
     gap: 1.5rem;
     justify-content: center;
     padding-top: 1rem;   
 }
+
 
 .container3 {
     margin: 0;
@@ -42,11 +43,11 @@ footer {
     padding-top: 2rem;
 }
 
-.container4 {
+.container5 {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 4rem);
-    grid-template-rows: 2rem 7rem;
+    grid-template-rows: 7rem;
     gap: 3rem;
     justify-content: center;
     padding-top: 1rem;
@@ -70,6 +71,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 1rem;
 }
 
 .card {

@@ -33,6 +33,10 @@ evaluate.addEventListener('click', compare)
 
 const card1 = document.querySelector('.container1')
 
+const deal = document.querySelector('#deal')
+deal.addEventListener('click', dealHoleCards)
+
+const card5 = document.querySelector('.container5')
 
 import Deck from './deck.js'
 
@@ -79,10 +83,13 @@ function dealHoleCards(){
     deckSize -= 1
     card1.appendChild(playerHoleCards[0][0].getHTML())
     card1.appendChild(playerHoleCards[1][0].getHTML())
+    card5.appendChild(getMystery())
+    card5.appendChild(getMystery())
 }
 dealHoleCards()
 
-
+// card1.appendChild(playerHoleCards[0][0].getHTML())
+// card1.appendChild(playerHoleCards[1][0].getHTML())
 
 
 
@@ -505,9 +512,10 @@ function checkStraightFlush1(flushArray1){
 
 function compare(){
     
-    const card4 = document.querySelector('.container4')
-    card4.appendChild(botHoleCards[0][0].getHTML())
-    card4.appendChild(botHoleCards[1][0].getHTML())
+    card5.removeChild(card5.firstElementChild)
+    card5.removeChild(card5.firstElementChild)
+    card5.appendChild(botHoleCards[0][0].getHTML())
+    card5.appendChild(botHoleCards[1][0].getHTML())
 
     playerHand = communityCards.concat(playerHoleCards)
     let Obj_CardsAndFreq = {}
@@ -657,6 +665,7 @@ function compare(){
     }
     text1.textContent = `Your points: ${playerMoney}`
     text.textContent = `Pot Money: ${potMoney}`
+    removeBotCards()
     if(playerMoney >= 200){
         text.textContent = "Congrats, you win!"
         flop.disabled = true
@@ -670,7 +679,20 @@ function compare(){
 }
 
 
-
+function removeBotCards() {
+    setTimeout(removeCards, 3000)
+}
+function removeCards() {
+    card1.removeChild(card1.firstElementChild)
+    card1.removeChild(card1.firstElementChild)
+    card5.removeChild(card5.firstElementChild)
+    card5.removeChild(card5.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+}
 
 
 function botTurn(){
@@ -730,10 +752,11 @@ function foldFunc(){
     card3.removeChild(card3.firstElementChild)
     card3.removeChild(card3.firstElementChild)
     card3.removeChild(card3.firstElementChild)
+    card5.removeChild(card5.firstElementChild)
+    card5.removeChild(card5.firstElementChild)
     // card3.removeChild(card3.firstElementChild)
     // card3.removeChild(card3.firstElementChild)
     playerHoleCards = []
-    dealHoleCards()
 }
 
 function callFunc(){
@@ -741,10 +764,12 @@ function callFunc(){
     potMoney += 10
     text.textContent = `Pot Money: ${potMoney}`
     needToCall = false
-    botTurn()
 }
 
-console.log("evaluatehand", evaluateHand())
-console.log("evaluatebothand", evaluateBotHand())
-console.log("playerhand", playerHand)
-console.log("bothand", botHand)
+
+function getMystery(){
+    const cardDiv = document.createElement('div')
+    cardDiv.classList.add("computer-card")
+    cardDiv.innerText = "?"
+    return cardDiv
+}
