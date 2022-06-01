@@ -24,7 +24,7 @@
 // deck of cards will be an array of 52 objects with value and suit being the properties
 // player hands = array of objects of your hole cards, with community cards pushed onto it
 // loop through the array to build a new array of the best 5 cards
-
+const card3 = document.querySelector('.container3')
 import Deck from './deck.js'
 const deck = new Deck()
 
@@ -65,28 +65,35 @@ evaluateHand()
 console.log(playerHoleCards)
 
 
+
+
 function dealFlop(){
     let index = Math.floor(Math.random() * deckSize)
-    communityCards.push(deck.splice(index - 1, 1))
+    communityCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1
     index = Math.floor(Math.random() * deckSize)
-    communityCards.push(deck.splice(index - 1, 1))
+    communityCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1 
     index = Math.floor(Math.random() * deckSize)
-    communityCards.push(deck.splice(index - 1, 1))
-    deckSize -= 1 
+    communityCards.push(deck.cards.splice(index - 1, 1))
+    deckSize -= 1
+    card3.appendChild(communityCards[0][0].getHTML())
+    card3.appendChild(communityCards[1][0].getHTML())
+    card3.appendChild(communityCards[2][0].getHTML())
 }
 
 function dealTurn(){
     let index = Math.floor(Math.random() * deckSize)
-    communityCards.push(deck.splice(index - 1, 1))
+    communityCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1
+    card3.appendChild(communityCards[3][0].getHTML())
 }
 
 function dealRiver() {
     let index = Math.floor(Math.random() * deckSize)
-    communityCards.push(deck.splice(index - 1, 1))
+    communityCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1
+    card3.appendChild(communityCards[4][0].getHTML())
 }
 
 //handstrength list:
@@ -116,6 +123,7 @@ function evaluateHand(flushArray) {
         }
     }
     console.log("playerHoleCards", playerHoleCards)
+    console.log("community", communityCards)
     console.log("herexxxx", playerHand)
     console.log("deck", deck)
     console.log("here342", Obj_CardsAndFreq)
@@ -451,21 +459,11 @@ function compare(){
     }
 }
 
-// function getCard() {
-//     const cardDiv = document.createElement('div')
-//     cardDiv.innerText = playerHand[0][0].suit
-// // cardDiv.classList.add("card", this.color)
-//     cardDiv.dataset.value = `${playerHand[0][0].value} ${playerHand[0][0].suit}`
-// return cardDiv
-// }
-
-
-
 const card1 = document.querySelector('.container1')
-card1.appendChild(playerHand[0][0].getHTML())
+card1.appendChild(playerHoleCards[0][0].getHTML())
 
 const card2 = document.querySelector('.container1')
-card1.appendChild(playerHand[1][0].getHTML())
+card1.appendChild(playerHoleCards[1][0].getHTML())
 console.log(evaluateHand())
 
 
@@ -478,24 +476,25 @@ console.log(evaluateHand())
 //const call = document.querySelector('#call')
 //call.addEventListener('click', call)
 
-//const flop = document.querySelector('#flop')
-//flop.addEventListener('click', dealFlop)
+const flop = document.querySelector('#flop')
+flop.addEventListener('click', dealFlop)
 
-//const turn = document.querySelector('#turn')
-//turn.addEventListener('click', dealTurn)
+const turn = document.querySelector('#turn')
+turn.addEventListener('click', dealTurn)
 
-//const river = document.querySelector('#river')
-//river.addEventListener('click', dealRiver)
+const river = document.querySelector('#river')
+river.addEventListener('click', dealRiver)
 
 const text = document.querySelector('.text')
-text.textContent = "lose"
+const text1 = document.querySelector('.text1')
+text.textContent = `Your points: ${playerMoney}`
+
 
 function betMoney(){
-    text.innerHTML = "You put in 10 points"
+    text.textContent = `Your points: ${playerMoney}`
     playerMoney -= 10
     potMoney += 10
 }
-betMoney()
 function fold(){
     botMoney += potMoney
     potMoney = 0
@@ -510,8 +509,8 @@ function call(){
 
 
 
-if (playerMoney == 200){
-    text.textContent = "Congrats you win!"
-} else if (botMoney == 200){
-    text.textContent = "No more money :("
-}
+// if (playerMoney == 200){
+//     text.textContent = "Congrats you win!"
+// } else if (botMoney == 200){
+//     text.textContent = "No more money :("
+// }
