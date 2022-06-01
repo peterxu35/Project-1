@@ -1,6 +1,8 @@
 
 let playerMoney = 100
+
 const card3 = document.querySelector('.container3')
+
 
 const flop = document.querySelector('#flop')
 flop.addEventListener('click', dealFlop)
@@ -12,10 +14,22 @@ const river = document.querySelector('#river')
 river.addEventListener('click', dealRiver)
 
 const text = document.querySelector('.text')
+
 const text1 = document.querySelector('.text1')
-text.textContent = `Your points: ${playerMoney}`
 
+text1.textContent = `Your points: ${playerMoney}`
 
+const betMoney = document.querySelector('#bet')
+betMoney.addEventListener('click',betMoneyFunc)
+
+const fold = document.querySelector('#fold')
+fold.addEventListener('click',foldFunc)
+
+const call = document.querySelector('#call')
+call.addEventListener('click', callFunc)
+
+const evaluate = document.querySelector('#evaluate')
+call.addEventListener('click', compare)
 
 
 import Deck from './deck.js'
@@ -40,12 +54,12 @@ let handStrength = 0
 let handStrength1 = 0
 //misc variabales
 
+let needToCall = 0
 
 let potMoney = 0
 
-let opponentMoney = 100
+let botMoney = 100
 
-let betAmount = 0
 
 //deal card functions
 function dealHoleCards(){
@@ -69,7 +83,7 @@ card1.appendChild(playerHoleCards[0][0].getHTML())
 
 const card2 = document.querySelector('.container1')
 card1.appendChild(playerHoleCards[1][0].getHTML())
-console.log(evaluateHand())
+
 
 
 
@@ -156,9 +170,6 @@ function evaluateHand(flushArray) {
     freqOfEachCard.forEach(item => {
         if (item > highScore){
             highScore = item
-            console.log("here", item)
-            console.log("here2", freqOfEachCard)
-            console.log("here3", Obj_CardsAndFreq)
         }
         if (Obj_PairAndTrip[item]){
             Obj_PairAndTrip[item] += 1
@@ -494,24 +505,31 @@ function checkStraightFlush1(flushArray1){
 function compare(){
     if (evaluateHand() > evaluateBotHand()){
         playerMoney += potMoney
+        potMoney = 0
     } else if (evaluateHand() < evaluateBotHand()){
         botMoney += potMoney
+        potMoney = 0
     } if (evaluateHand() == evaluateBotHand()){
  //when handstrength is equal you have to compare arrays of values 
         //for highcard, pair, trip, quads
         if (evaluateHand() == 0 || evaluateHand() == 1 || evaluateHand() == 3 || evaluateHand() == 7){
             if (sortedObjKeys[0] > sortedObjKeys1[0]){
                 playerMoney += potMoney
+                potMoney = 0
             } else if (sortedObjKeys[0] < sortedObjKeys1[0]){
                 botMoney += potMoney
+                potMoney = 0
             } else {
                 if (sortedObjKeys[6] > sortedObjKeys1[6]){
                     playerMoney += potMoney
+                    potMoney = 0
                 } else if (sortedObjKeys[6] < sortedObjKeys1[6]){
                     botMoney += potMoney
+                    potMoney = 0
                 } else {
-                    playerMoney += (potMoney / 5)
-                    botMoney += (potMoney / 5)
+                    playerMoney += (potMoney / 2)
+                    botMoney += (potMoney / 2)
+                    potMoney = 0
                 }
             }
         }
@@ -519,17 +537,22 @@ function compare(){
         if (evaluateHand() == 2){
             if (sortedObjKeys[0] > sortedObjKeys1[0]){
                 playerMoney += potMoney
+                potMoney = 0
             } else if (sortedObjKeys[0] < sortedObjKeys1[0]){
                 botMoney += potMoney
+                potMoney = 0
             } else {
                 if (sortedObjKeys[0] == sortedObjKeys1[0]){
                     if (sortedObjKeys[1] > sortedObjKeys1[1]){
                         playerMoney += potMoney
+                        potMoney = 0
                     } else if (sortedObjKeys[1] < sortedObjKeys[1]){
                         botMoney += potMoney
+                        potMoney = 0
                     } else {
                         playerMoney += (potMoney / 2)
                         botMoney += (potMoney / 2)
+                        potMoney = 0
                     }
                 }
             }
@@ -539,73 +562,118 @@ function compare(){
         if (evaluateHand == 4){
             if(straightHighCard > straightHighCard1){
                 playerMoney += potMoney 
+                potMoney = 0
             } else if (straightHighCard < straightHighCard1){
-                botMoney += potMoney
+                botMoney += 
+                potMoney = 0
             } else {
                 playerMoney += (potMoney / 2)
                 botMoney += (potMoney / 2)
+                potMoney = 0
             }
         }
         //for flush, it is sorted in ascending order, start from back
         if (evaluateHand == 5){
             if (flushArray[flushArray.length - 1] > flushArray1[flushArray1 - 1]){
                 playerMoney += potMoney
+                potMoney = 0
             } else if (flushArray[flushArray.length - 1] < flushArray1[flushArray1 - 1]){
                 botMoney += potMoney
+                potMoney = 0
             } else {
                 if (flushArray[flushArray.length - 2] > flushArray1[flushArray1.length - 2]){
                     playerMoney += potMoney
+                    potMoney = 0
                 } else if (flushArray[flushArray.length - 2] < flushArray1[flushArray1.length - 2]){
                     botMoney += potMoney
+                    potMoney = 0
                 } else {
                     playerMoney += (potMoney / 2)
                     botMoney += (potMoney / 2)
+                    potMoney = 0
                 }
             }      
         }
         //for straight flush, also only need to look at 1 card
         if (evaluateHand == 8){
             if(straightFlushHighCard > straightFlushHighCard1){
-                playerMoney += potMoney 
+                playerMoney += potMoney
+                potMoney = 0 
             } else if (straightFlushHighCard < straightFlushHighCard1){
                 botMoney += potMoney
+                potMoney = 0
             } else {
                 playerMoney += (potMoney / 2)
                 botMoney += (potMoney / 2)
+                potMoney = 0
             }
         }
     }
+    text1.textContent = `Your points: ${playerMoney}`
+    text.textContent = 'Pot Money: 0'
 }
 
 
 
-// const betMoney = document.querySelector('#bet')
-// betMoney.addEventListener('click',betMoney)
-
-//const fold = document.querySelector('#fold)
-//fold.addEventListener('click',fold)
-
-//const call = document.querySelector('#call')
-//call.addEventListener('click', call)
 
 
-
-
-function betMoney(){
-    text.textContent = `Your points: ${playerMoney}`
-    playerMoney -= 10
-    potMoney += 10
+function botTurn(){
+    setTimeout(botAction, 3000)
 }
-function fold(){
+
+function botAction(){
+    let x = Math.floor(Math.random()*2)
+    //bot bets
+    if (x = 0){
+        if(needToCall = true){
+            botMoney -= 20
+            potMoney += 20
+            text.textContent = `Pot Money: ${potMoney}`
+            needToCall = true
+        } else {
+            botMoney -= 10
+            potMoney += 10
+            text.textContent = `Pot Money: ${potMoney}`
+            needToCall = true
+        }
+    //bot calls/checks    
+    } else {
+        if(needToCall = true){
+            botMoney -= 10
+            potMoney += 10
+            text.textContent = `Pot Money: ${potMoney}`
+       } else {
+        text.textContent = `Pot Money: ${potMoney}| Bot checks`
+       }
+    }
+}
+
+function betMoneyFunc(){
+    if (needToCall = true){
+        playerMoney -= 20
+        potMoney += 20
+        needToCall = false
+    } else {
+        playerMoney -= 10
+        potMoney += 10
+    }
+    text.textContent = `Pot Money: ${potMoney}`
+    text1.textContent = `Your points: ${playerMoney}`
+    console.log("here")
+    botTurn()
+}
+
+
+function foldFunc(){
     botMoney += potMoney
     potMoney = 0
-    playerHand = []
-    botHand = []
+    dealHoleCards()
 }
 
-function call(){
+function callFunc(){
     playerMoney -= 10
     potMoney += 10
+    text.textContent = `Pot Money: ${potMoney}`
 }
 
 console.log("evaluatehand", evaluateHand())
