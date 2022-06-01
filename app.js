@@ -29,7 +29,9 @@ const call = document.querySelector('#call')
 call.addEventListener('click', callFunc)
 
 const evaluate = document.querySelector('#evaluate')
-call.addEventListener('click', compare)
+evaluate.addEventListener('click', compare)
+
+const card1 = document.querySelector('.container1')
 
 
 import Deck from './deck.js'
@@ -75,14 +77,13 @@ function dealHoleCards(){
     index = Math.floor(Math.random() * deckSize)
     botHoleCards.push(deck.cards.splice(index - 1, 1))
     deckSize -= 1
+    card1.appendChild(playerHoleCards[0][0].getHTML())
+    card1.appendChild(playerHoleCards[1][0].getHTML())
 }
 dealHoleCards()
 
-const card1 = document.querySelector('.container1')
-card1.appendChild(playerHoleCards[0][0].getHTML())
 
-const card2 = document.querySelector('.container1')
-card1.appendChild(playerHoleCards[1][0].getHTML())
+
 
 
 
@@ -503,6 +504,50 @@ function checkStraightFlush1(flushArray1){
 } 
 
 function compare(){
+    
+    const card4 = document.querySelector('.container4')
+    card4.appendChild(botHoleCards[0][0].getHTML())
+    card4.appendChild(botHoleCards[1][0].getHTML())
+
+    playerHand = communityCards.concat(playerHoleCards)
+    let Obj_CardsAndFreq = {}
+    for (let i = 0; i < playerHand.length; i++){
+        if (Obj_CardsAndFreq[playerHand[i][0].value]){
+            Obj_CardsAndFreq[playerHand[i][0].value] += 1
+        } else {
+            Obj_CardsAndFreq[playerHand[i][0].value] = 1
+        }
+    }
+    //create an object with properties ordered by freq to compare highcards
+    let sortedObj = Object.entries(Obj_CardsAndFreq).sort((a,b) => b[1] - a[1])
+    //get keys of sorted Obj
+    let sortedObjKeys = []
+    for (let i = 0; i < sortedObj.length; i++){
+      sortedObjKeys.push(sortedObj[i][0])
+    }
+   
+    botHand = communityCards.concat(botHoleCards)
+    let Obj_CardsAndFreq1 = {}
+    for (let i = 0; i < botHand.length; i++){
+        if (Obj_CardsAndFreq1[botHand[i][0].value]){
+            Obj_CardsAndFreq1[botHand[i][0].value] += 1
+        } else {
+            Obj_CardsAndFreq1[botHand[i][0].value] = 1
+        }
+    }
+     //create an object with properties ordered by freq to compare highcards
+     let sortedObj1 = Object.entries(Obj_CardsAndFreq1).sort((a,b) => b[1] - a[1])
+     //get keys of sorted Obj
+     let sortedObjKeys1 = []
+     for (let i = 0; i < sortedObj1.length; i++){
+       sortedObjKeys1.push(sortedObj1[i][0])
+     }
+    
+    
+    
+    
+    
+    console.log("here")
     if (evaluateHand() > evaluateBotHand()){
         playerMoney += potMoney
         potMoney = 0
@@ -513,6 +558,7 @@ function compare(){
  //when handstrength is equal you have to compare arrays of values 
         //for highcard, pair, trip, quads
         if (evaluateHand() == 0 || evaluateHand() == 1 || evaluateHand() == 3 || evaluateHand() == 7){
+            console.log("Here")
             if (sortedObjKeys[0] > sortedObjKeys1[0]){
                 playerMoney += potMoney
                 potMoney = 0
@@ -559,7 +605,7 @@ function compare(){
             
         }
         //for straight, only needs to look at 1 card
-        if (evaluateHand == 4){
+        if (evaluateHand() == 4){
             if(straightHighCard > straightHighCard1){
                 playerMoney += potMoney 
                 potMoney = 0
@@ -573,7 +619,7 @@ function compare(){
             }
         }
         //for flush, it is sorted in ascending order, start from back
-        if (evaluateHand == 5){
+        if (evaluateHand() == 5){
             if (flushArray[flushArray.length - 1] > flushArray1[flushArray1 - 1]){
                 playerMoney += potMoney
                 potMoney = 0
@@ -595,7 +641,7 @@ function compare(){
             }      
         }
         //for straight flush, also only need to look at 1 card
-        if (evaluateHand == 8){
+        if (evaluateHand() == 8){
             if(straightFlushHighCard > straightFlushHighCard1){
                 playerMoney += potMoney
                 potMoney = 0 
@@ -610,7 +656,17 @@ function compare(){
         }
     }
     text1.textContent = `Your points: ${playerMoney}`
-    text.textContent = 'Pot Money: 0'
+    text.textContent = `Pot Money: ${potMoney}`
+    if(playerMoney >= 200){
+        text.textContent = "Congrats, you win!"
+        flop.disabled = true
+        betMoney.disabled = true
+        call.disabled = true
+        fold.disabled = true
+        turn.disabled = true
+        river.disabled = true
+        evaluate.disabled = true
+    }
 }
 
 
@@ -624,26 +680,28 @@ function botTurn(){
 function botAction(){
     let x = Math.floor(Math.random()*2)
     //bot bets
-    if (x = 0){
+    if (x == 0){
         if(needToCall = true){
             botMoney -= 20
             potMoney += 20
-            text.textContent = `Pot Money: ${potMoney}`
+            text.textContent = `Pot Money: ${potMoney} Bot bets 20`
             needToCall = true
         } else {
             botMoney -= 10
             potMoney += 10
-            text.textContent = `Pot Money: ${potMoney}`
-            needToCall = true
+            text.textContent = `Pot Money: ${potMoney} Bot bets 10`
+            needToCall = false
         }
     //bot calls/checks    
     } else {
         if(needToCall = true){
             botMoney -= 10
             potMoney += 10
-            text.textContent = `Pot Money: ${potMoney}`
+            text.textContent = `Pot Money: ${potMoney} Bot calls`
+            needToCall = false
        } else {
         text.textContent = `Pot Money: ${potMoney}| Bot checks`
+        needToCall = false
        }
     }
 }
@@ -652,10 +710,10 @@ function betMoneyFunc(){
     if (needToCall = true){
         playerMoney -= 20
         potMoney += 20
-        needToCall = false
     } else {
         playerMoney -= 10
         potMoney += 10
+        needToCall = false
     }
     text.textContent = `Pot Money: ${potMoney}`
     text1.textContent = `Your points: ${playerMoney}`
@@ -667,6 +725,14 @@ function betMoneyFunc(){
 function foldFunc(){
     botMoney += potMoney
     potMoney = 0
+    card1.removeChild(card1.firstElementChild)
+    card1.removeChild(card1.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+    card3.removeChild(card3.firstElementChild)
+    // card3.removeChild(card3.firstElementChild)
+    // card3.removeChild(card3.firstElementChild)
+    playerHoleCards = []
     dealHoleCards()
 }
 
@@ -674,6 +740,8 @@ function callFunc(){
     playerMoney -= 10
     potMoney += 10
     text.textContent = `Pot Money: ${potMoney}`
+    needToCall = false
+    botTurn()
 }
 
 console.log("evaluatehand", evaluateHand())
